@@ -1,6 +1,6 @@
 name: adaptive_shimmer
-description: "A lightweight, zero-dependency skeleton loader with shimmer and pulse animations, multiple shapes, custom gradients, and shape-adaptive capabilities."
-version: 0.2.0
+description: "A lightweight, zero-dependency skeleton loader with shimmer and pulse animations, screen-wide shimmer, exclude widgets, and shape-adaptive capabilities."
+version: 1.0.0
 homepage: https://github.com/abhijithsabudev/adaptive_shimmer
 repository: https://github.com/abhijithsabudev/adaptive_shimmer
 

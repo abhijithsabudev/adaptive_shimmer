@@ -1,3 +1,28 @@
+## 1.0.0 - Production Ready with Screen Shimmer
+
+### 🎯 Major Features
+- **Screen Shimmer**: Apply shimmer effect to entire screen and all components
+  - Perfect for page-level loading states
+  - Maintains responsiveness during loading
+  - GPU-accelerated screen-wide shader
+- **Shimmer Exclude**: Exclude specific widgets from screen shimmer effect
+  - Use `ShimmerExclude` wrapper for widgets that should not shimmer
+  - Useful for buttons, navigation, or interactive elements
+  - Flexible component-level control
+
+### ✨ Additional Improvements
+- Enhanced screen shimmer with three animation types
+- Better integration with page layouts
+- Improved performance with IgnorePointer to prevent interaction during shimmer
+- Full backward compatibility with AdaptiveShimmer
+
+### 📚 Documentation
+- Added screen shimmer examples
+- Shimmer exclude usage patterns
+- Advanced layout examples
+
+---
+
 ## 0.2.0 - Major Rebuild
 
 ### ⚡ Breaking Changes

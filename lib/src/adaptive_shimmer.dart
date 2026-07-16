@@ -3,7 +3,7 @@ import 'widgets/shimmer_widget.dart';
 import 'models/animation_type.dart';
 
 /// Main adaptive shimmer widget
-/// 
+///
 /// Provides a lightweight shimmer effect that adapts to any widget shape.
 /// No external dependencies - uses pure Flutter animations.
 class AdaptiveShimmer extends StatelessWidget {

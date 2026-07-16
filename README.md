@@ -7,6 +7,8 @@ A lightweight, **zero-dependency** Flutter skeleton loader package with shimmer 
 ✨ **Zero External Dependencies** - Pure Flutter implementation
 - 🎨 Multiple animation types (shimmer, pulse, combined)
 - 📦 Pre-built skeleton widgets (box, circle, line, paragraph)
+- 📱 Screen-wide shimmer for page loading states
+- 🚫 Shimmer exclude to hide widgets during loading
 - 🎯 Shape-adaptive shimmer effect
 - 🎨 Custom colors and gradients
 - ⚡ Lightweight and performant
@@ -18,7 +20,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  adaptive_shimmer: ^0.2.0
+  adaptive_shimmer: ^1.0.0
 ```
 
 ## Quick Start
@@ -64,12 +66,56 @@ SkeletonLine(
 )
 ```
 
-#### Paragraph Skeleton
+### Screen-Wide Shimmer
+
+Wrap your entire screen to apply shimmer to all components:
+
 ```dart
-SkeletonParagraph(
-  width: double.infinity,
-  lineCount: 3,
-  spacing: 8,
+ScreenShimmer(
+  loading: isLoading,
+  child: Scaffold(
+    appBar: AppBar(title: Text('My App')),
+    body: SingleChildScrollView(
+      child: Column(
+        children: [
+          // All widgets inside will shimmer during loading
+          Text('Content'),
+          Image.network('...'),
+          // ... more widgets
+        ],
+      ),
+    ),
+  ),
+)
+```
+
+### Excluding Widgets from Screen Shimmer
+
+Use `ShimmerExclude` to keep certain widgets visible during screen shimmer:
+
+```dart
+ScreenShimmer(
+  loading: isLoading,
+  child: Scaffold(
+    appBar: AppBar(title: Text('My App')),
+    body: Column(
+      children: [
+        // This will shimmer
+        ShimmerBox(width: 200, height: 100),
+        
+        // This will NOT shimmer - visible during loading
+        ShimmerExclude(
+          child: ElevatedButton(
+            onPressed: () {},
+            child: Text('Retry'),
+          ),
+        ),
+        
+        // This will shimmer
+        ShimmerLine(width: 300),
+      ],
+    ),
+  ),
 )
 ```
 
@@ -214,6 +260,24 @@ Container(
 | `lineHeight` | `double` | `10.0` | Height of each line |
 | `spacing` | `double` | `8.0` | Space between lines |
 
+### ScreenShimmer
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `child` | `Widget` | required | The widget to show shimmer effect on (typically your screen) |
+| `loading` | `bool` | required | Whether to show loading state |
+| `enabled` | `bool` | `true` | Whether animation is enabled |
+| `duration` | `Duration` | 1500ms | Animation duration |
+| `animationType` | `AnimationType` | `shimmer` | Type of animation |
+| `baseColor` | `Color` | grey[300] | Background color |
+| `highlightColor` | `Color` | grey[100] | Highlight/wave color |
+
+### ShimmerExclude
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `child` | `Widget` | required | Widget to exclude from shimmer effect |
+
 ## Performance
 
 - **Zero external dependencies** - smaller bundle size
@@ -229,6 +293,8 @@ Container(
 | Dependencies | None | None | None |
 | Animation Types | 3 | 1 | 1 |
 | Skeleton Widgets | Yes | Yes | No |
+| Screen Shimmer | Yes | No | No |
+| Exclude Widgets | Yes | No | No |
 | Custom Shapes | Yes | Yes | Limited |
 | Ease of Use | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 

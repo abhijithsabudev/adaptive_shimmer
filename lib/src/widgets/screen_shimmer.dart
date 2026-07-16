@@ -193,7 +193,8 @@ class _ShimmerLayerPainter extends StatelessWidget {
                   colors: [
                     baseColor.withValues(alpha: 0),
                     highlightColor.withValues(
-                      alpha: animationType == AnimationType.combined ? 0.3 : 0.15,
+                      alpha:
+                          animationType == AnimationType.combined ? 0.3 : 0.15,
                     ),
                     baseColor.withValues(alpha: 0),
                   ],
@@ -217,7 +218,7 @@ class _ShimmerLayerPainter extends StatelessWidget {
 }
 
 /// Exclude specific widgets from screen shimmer effect
-/// 
+///
 /// Wrap any widget with [ShimmerExclude] to prevent it from being shimmed
 /// when used within a [ScreenShimmer]
 class ShimmerExclude extends StatelessWidget {
@@ -232,7 +233,7 @@ class ShimmerExclude extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scope = _ShimmerExcludeScope.of(context);
-    
+
     if (scope?.isShimmering == true) {
       // When shimmering, show the child normally without shimmer
       return Opacity(
@@ -240,7 +241,7 @@ class ShimmerExclude extends StatelessWidget {
         child: child,
       );
     }
-    
+
     return child;
   }
 }

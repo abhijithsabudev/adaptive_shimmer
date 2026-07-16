@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/shimmer_widget.dart';
 import 'models/animation_type.dart';
+import 'models/shimmer_direction.dart';
 
 /// Main adaptive shimmer widget
 ///
@@ -28,6 +29,12 @@ class AdaptiveShimmer extends StatelessWidget {
   /// Highlight color (shimmer wave)
   final Color highlightColor;
 
+  /// Direction of shimmer effect
+  final ShimmerDirection direction;
+
+  /// Intensity of shimmer (0.0 - 1.0, where 1.0 is brightest)
+  final double intensity;
+
   const AdaptiveShimmer({
     super.key,
     required this.child,
@@ -37,6 +44,8 @@ class AdaptiveShimmer extends StatelessWidget {
     this.animationType = AnimationType.shimmer,
     this.baseColor = const Color(0xFFE0E0E0),
     this.highlightColor = const Color(0xFFF5F5F5),
+    this.direction = ShimmerDirection.ltr,
+    this.intensity = 0.7,
   });
 
   @override
@@ -51,6 +60,8 @@ class AdaptiveShimmer extends StatelessWidget {
       duration: duration,
       animationType: animationType,
       enabled: enabled,
+      direction: direction,
+      intensity: intensity,
       child: child,
     );
   }

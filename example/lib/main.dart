@@ -1,5 +1,10 @@
 import 'package:adaptive_shimmer/adaptive_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'screens/direction_demo.dart';
+import 'screens/intensity_demo.dart';
+import 'screens/animation_type_demo.dart';
+import 'screens/templates_demo.dart';
+import 'screens/staggered_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +16,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Adaptive Shimmer Example',
+      title: 'Adaptive Shimmer Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Adaptive Shimmer Example'),
+      home: const MyHomePage(title: 'Adaptive Shimmer'),
     );
   }
 }
@@ -31,198 +36,352 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool isLoading = true;
+  final List<DemoItem> demos = [
+    DemoItem(
+      title: 'Animation Types',
+      description: 'Shimmer, Pulse, Combined',
+      icon: Icons.animation,
+      screen: const AnimationTypeDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Direction Control',
+      description: '8 Different directions',
+      icon: Icons.trending_up,
+      screen: const DirectionDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Intensity Control',
+      description: 'Adjust shimmer brightness',
+      icon: Icons.brightness_6,
+      screen: const IntensityDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Staggered Shimmer',
+      description: 'Cascade loading effect',
+      icon: Icons.view_agenda,
+      screen: const StaggeredDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Templates',
+      description: 'Product, Profile, Feed',
+      icon: Icons.inventory_2,
+      screen: const TemplatesDemoScreen(),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Toggle loading state
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    isLoading = !isLoading;
-                  });
-                },
-                child: Text(isLoading ? 'Stop Loading' : 'Start Loading'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.deepPurple, Colors.deepPurple.shade300],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-              const SizedBox(height: 24),
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Adaptive Shimmer',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Zero-dependency skeleton loader with shimmer animations',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.white70,
+                        ),
+                  ),
+                ],
+              ),
+            ),
 
-              // 1. Basic Shimmer with custom widget
-              _buildSection(
-                title: '1. Basic Shimmer',
-                child: AdaptiveShimmer(
-                  loading: isLoading,
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[100],
-                      borderRadius: BorderRadius.circular(8),
+            // Demo Grid
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Explore Features',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
                     ),
-                    child: const Center(child: Text('Custom Widget')),
+                    itemCount: demos.length,
+                    itemBuilder: (_, index) {
+                      final demo = demos[index];
+                      return DemoCard(
+                        demo: demo,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => demo.screen),
+                        ),
+                      );
+                    },
                   ),
-                ),
+                ],
               ),
+            ),
 
-              // 2. Pulse Animation
-              _buildSection(
-                title: '2. Pulse Animation',
-                child: AdaptiveShimmer(
-                  loading: isLoading,
-                  animationType: AnimationType.pulse,
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.green[100],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(child: Text('Pulse Effect')),
+            // Quick Examples
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Quick Examples',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  ..._buildQuickExamples(context),
+                ],
               ),
-
-              // 3. Combined Shimmer + Pulse
-              _buildSection(
-                title: '3. Combined Animation',
-                child: AdaptiveShimmer(
-                  loading: isLoading,
-                  animationType: AnimationType.combined,
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.orange[100],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(child: Text('Combined Effect')),
-                  ),
-                ),
-              ),
-
-              // 4. Skeleton Box
-              _buildSection(
-                title: '4. Skeleton Box',
-                child: SkeletonBox(
-                  width: double.infinity,
-                  height: 100,
-                  borderRadius: 8,
-                ),
-              ),
-
-              // 5. Skeleton Circle
-              _buildSection(
-                title: '5. Skeleton Circle',
-                child: Center(
-                  child: SkeletonCircle(
-                    radius: 40,
-                  ),
-                ),
-              ),
-
-              // 6. Skeleton Paragraph (Text placeholder)
-              _buildSection(
-                title: '6. Skeleton Paragraph',
-                child: SkeletonParagraph(
-                  width: double.infinity,
-                  lineCount: 4,
-                  spacing: 10,
-                ),
-              ),
-
-              // 7. Product Card Example
-              _buildSection(
-                title: '7. Product Card',
-                child: _buildProductCard(),
-              ),
-
-              // 8. Custom Colors
-              _buildSection(
-                title: '8. Custom Colors',
-                child: AdaptiveShimmer(
-                  loading: isLoading,
-                  baseColor: const Color(0xFFFFE0B2),
-                  highlightColor: const Color(0xFFFFF8E1),
-                  child: Container(
-                    width: double.infinity,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFE0B2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(child: Text('Custom Colors')),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildSection({required String title, required Widget child}) {
+  List<Widget> _buildQuickExamples(BuildContext context) {
+    return [
+      // Example 1: Basic Shimmer
+      _buildExampleCard(
+        context,
+        title: 'Basic Shimmer',
+        child: AdaptiveShimmer(
+          loading: true,
+          child: Container(
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.blue[100],
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 12),
+
+      // Example 2: Multiple Directions
+      _buildExampleCard(
+        context,
+        title: 'Multiple Directions',
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            AdaptiveShimmer(
+              loading: true,
+              direction: ShimmerDirection.ltr,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.green[100],
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            AdaptiveShimmer(
+              loading: true,
+              direction: ShimmerDirection.ttb,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.orange[100],
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            AdaptiveShimmer(
+              loading: true,
+              direction: ShimmerDirection.diagonalLTR,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.purple[100],
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 12),
+
+      // Example 3: Skeleton Widgets
+      _buildExampleCard(
+        context,
+        title: 'Skeleton Widgets',
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                SkeletonCircle(radius: 15),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SkeletonLine(width: 100, height: 10),
+                      const SizedBox(height: 6),
+                      SkeletonLine(width: 150, height: 8),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  Widget _buildExampleCard(
+    BuildContext context, {
+    required String title,
+    required Widget child,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.labelMedium,
         ),
-        const SizedBox(height: 12),
-        child,
-        const SizedBox(height: 24),
+        const SizedBox(height: 8),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[300]!),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: child,
+        ),
       ],
     );
   }
+}
 
-  Widget _buildProductCard() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        children: [
-          // Product Image
-          SkeletonCircle(
-            radius: 40,
-          ),
-          const SizedBox(width: 12),
-          // Product Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SkeletonLine(
-                  width: 150,
-                  height: 12,
+class DemoItem {
+  final String title;
+  final String description;
+  final IconData icon;
+  final Widget screen;
+
+  DemoItem({
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.screen,
+  });
+}
+
+class DemoCard extends StatelessWidget {
+  final DemoItem demo;
+  final VoidCallback onTap;
+
+  const DemoCard({
+    Key? key,
+    required this.demo,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[300]!),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.deepPurple.withOpacity(0.05),
+                      Colors.deepPurple.withOpacity(0.02),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                 ),
-                const SizedBox(height: 8),
-                SkeletonParagraph(
-                  width: double.infinity,
-                  lineCount: 2,
-                  lineHeight: 10,
-                  spacing: 6,
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    demo.icon,
+                    size: 32,
+                    color: Colors.deepPurple,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    demo.title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    demo.description,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Spacer(),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Icon(
+                      Icons.arrow_forward_rounded,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

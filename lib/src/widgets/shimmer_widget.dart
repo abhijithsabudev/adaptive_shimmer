@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/animation_type.dart';
+import '../models/shimmer_direction.dart';
 
 /// Base widget for shimmer animation
 class ShimmerWidget extends StatefulWidget {
@@ -9,6 +10,8 @@ class ShimmerWidget extends StatefulWidget {
   final Duration duration;
   final AnimationType animationType;
   final bool enabled;
+  final ShimmerDirection direction;
+  final double intensity;
 
   const ShimmerWidget({
     Key? key,
@@ -18,6 +21,8 @@ class ShimmerWidget extends StatefulWidget {
     this.duration = const Duration(milliseconds: 1500),
     this.animationType = AnimationType.shimmer,
     this.enabled = true,
+    this.direction = ShimmerDirection.ltr,
+    this.intensity = 0.7,
   }) : super(key: key);
 
   @override
@@ -85,9 +90,11 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
         Positioned.fill(
           child: ShaderMask(
             shaderCallback: (bounds) {
+              final (begin, end) = _getAlignmentForDirection();
+
               return LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+                begin: begin,
+                end: end,
                 stops: [
                   _shimmerAnimation.value - 0.3,
                   _shimmerAnimation.value,
@@ -95,7 +102,7 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
                 ],
                 colors: [
                   widget.baseColor.withValues(alpha: 0),
-                  widget.highlightColor.withValues(alpha: 0.7),
+                  widget.highlightColor.withValues(alpha: widget.intensity),
                   widget.baseColor.withValues(alpha: 0),
                 ],
               ).createShader(bounds);
@@ -107,6 +114,27 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
         ),
       ],
     );
+  }
+
+  (Alignment, Alignment) _getAlignmentForDirection() {
+    switch (widget.direction) {
+      case ShimmerDirection.ltr:
+        return (Alignment.centerLeft, Alignment.centerRight);
+      case ShimmerDirection.rtl:
+        return (Alignment.centerRight, Alignment.centerLeft);
+      case ShimmerDirection.ttb:
+        return (Alignment.topCenter, Alignment.bottomCenter);
+      case ShimmerDirection.btt:
+        return (Alignment.bottomCenter, Alignment.topCenter);
+      case ShimmerDirection.diagonalLTR:
+        return (Alignment.topLeft, Alignment.bottomRight);
+      case ShimmerDirection.diagonalRTL:
+        return (Alignment.topRight, Alignment.bottomLeft);
+      case ShimmerDirection.diagonalBLTR:
+        return (Alignment.bottomLeft, Alignment.topRight);
+      case ShimmerDirection.wave:
+        return (Alignment.centerLeft, Alignment.centerRight);
+    }
   }
 
   Widget _buildPulse() {
@@ -125,9 +153,11 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
           Positioned.fill(
             child: ShaderMask(
               shaderCallback: (bounds) {
+                final (begin, end) = _getAlignmentForDirection();
+
                 return LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: begin,
+                  end: end,
                   stops: [
                     _shimmerAnimation.value - 0.3,
                     _shimmerAnimation.value,
@@ -135,7 +165,8 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
                   ],
                   colors: [
                     widget.baseColor.withValues(alpha: 0),
-                    widget.highlightColor.withValues(alpha: 0.4),
+                    widget.highlightColor
+                        .withValues(alpha: widget.intensity * 0.5),
                     widget.baseColor.withValues(alpha: 0),
                   ],
                 ).createShader(bounds);

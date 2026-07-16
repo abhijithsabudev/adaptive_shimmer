@@ -1,6 +1,8 @@
 name: adaptive_shimmer
 description: "A package to give adaptive shimmer effect to your widgets with automatic shape adaptability"
-version: 0.1.2
+version: 0.1.3
+homepage: https://github.com/abhijithsabudev/adaptive_shimmer
+repository: https://github.com/abhijithsabudev/adaptive_shimmer
 
 environment:
   sdk: '>=3.2.1 <4.0.0'
@@ -20,6 +22,3 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
-  assets:
-    - assets/
-    - assets/images/

@@ -305,23 +305,6 @@ CollectionSkeleton(...)                     // List/grid skeletons
 - Built-in transformation caching
 - Zero re-renders on rebuilds
 - ~10KB package size (no dependencies)
-|---------|-----------------|--------------|---------|
-| **Bundle Size** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
-| **Dependencies** | None | None | None |
-| **Animation Types** | 3 | 1 | 1 |
-| **Directions** | 8 | Limited | 1 |
-| **Skeleton Widgets** | Yes | Yes | No |
-| **SmartSkeleton** | ✅ | Limited | ❌ |
-| **Animation Control** | ✅ | ❌ | ❌ |
-| **Theme System** | ✅ | Limited | ❌ |
-| **Accessibility** | ✅ | ❌ | ❌ |
-| **Screen Shimmer** | ✅ | ❌ | ❌ |
-| **Exclude Widgets** | ✅ | ❌ | ❌ |
-| **Staggered Effect** | ✅ | ❌ | ❌ |
-| **Smooth Transition** | ✅ | ❌ | ❌ |
-| **Intensity Control** | ✅ | ❌ | ❌ |
-| **Dark Mode** | ✅ | ✅ | ✅ |
-| **Ease of Use** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 
 ---
 

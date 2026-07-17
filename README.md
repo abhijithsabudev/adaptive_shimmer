@@ -25,6 +25,15 @@
 - **Screen-Wide Shimmer** - Page-level loading states
 - **Shimmer Exclude** - Keep certain widgets visible during loading
 - **Intensity Control** - Adjust shimmer brightness (0.0 - 1.0)
+- **Animation Control** - Pause/resume/stop animations with ShimmerController
+- **Theme System** - 8 pre-built themes + custom configuration
+- **Accessibility** - Automatic motion preference detection
+
+### 🤖 Smart Skeleton Generation
+- **SmartSkeleton** - Automatically transform widgets to skeletons
+- **Shape Detection** - Respects ClipRRect, ClipOval for shape-aware skeletons
+- **Empty Space Handling** - Fill SizedBox and Padding areas during loading
+- **Intelligent Config** - Default, aggressive, conservative, and fill modes
 
 ### 📦 Pre-built Components
 - **Skeleton Widgets** - Box, Circle, Line, Paragraph
@@ -40,7 +49,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  adaptive_shimmer: ^1.0.0
+  adaptive_shimmer: ^1.1.0
 ```
 
 Then run:
@@ -99,6 +108,141 @@ ShimmerTransition(
   child: ActualContent(),
   transitionDuration: Duration(milliseconds: 500),
 )
+```
+
+---
+
+## 🤖 SmartSkeleton - Automatic Widget Transformation
+
+Automatically convert your actual UI widgets into skeleton loaders! No manual templates needed.
+
+```dart
+// SmartSkeleton intelligently detects and transforms widgets
+SmartSkeleton(
+  loading: isLoading,
+  child: YourCompleteWidget(), // Text → SkeletonLine, Image → SkeletonBox, etc.
+)
+```
+
+### Features
+- **Auto Detection** - Identifies Text, Image, Container, Row, Column, etc.
+- **Shape Aware** - Respects ClipRRect borderRadius and ClipOval for circular skeletons
+- **Empty Space Filling** - Optional filling of SizedBox and Padding areas
+- **Multiple Presets** - Choose configuration that fits your needs
+
+### Configuration Modes
+
+```dart
+// Default: Replace text and images only
+SmartSkeleton(
+  loading: true,
+  config: SmartSkeletonConfig.defaultConfig,
+  child: MyWidget(),
+)
+
+// Aggressive: Replace containers too
+SmartSkeleton(
+  loading: true,
+  config: SmartSkeletonConfig.aggressive,
+  child: MyWidget(),
+)
+
+// Fill Mode: Include empty space and padding
+SmartSkeleton(
+  loading: true,
+  config: SmartSkeletonConfig.fillMode,
+  child: MyWidget(),
+)
+
+// Conservative: Text only
+SmartSkeleton(
+  loading: true,
+  config: SmartSkeletonConfig.conservative,
+  child: MyWidget(),
+)
+```
+
+---
+
+## 🎮 Animation Control with ShimmerController
+
+Control shimmer animations programmatically - pause, resume, stop whenever you need.
+
+```dart
+final shimmerController = ShimmerController();
+
+AdaptiveShimmer(
+  loading: true,
+  controller: shimmerController,
+  child: MyWidget(),
+)
+
+// Control the animation
+shimmerController.pause();      // Pause
+shimmerController.resume();     // Resume
+shimmerController.toggle();     // Pause/Resume toggle
+shimmerController.stop();       // Stop permanently
+```
+
+---
+
+## 🎨 Theme System
+
+Use pre-built themes or create custom ones for consistent styling.
+
+```dart
+// Using a theme preset
+AdaptiveShimmer.withTheme(
+  loading: isLoading,
+  theme: ShimmerTheme.dark,  // or .light, .fast, .slow, .subtle, .prominent
+  child: MyWidget(),
+)
+
+// Create a custom theme
+AdaptiveShimmer.withTheme(
+  loading: isLoading,
+  theme: ShimmerTheme.custom(
+    baseColor: Colors.grey[300],
+    highlightColor: Colors.white,
+    duration: Duration(milliseconds: 1000),
+    intensity: 0.5,
+  ),
+  child: MyWidget(),
+)
+```
+
+### Available Theme Presets
+- **light** - Light mode with subtle animation
+- **dark** - Dark mode with higher contrast
+- **fast** - Quick 800ms animation
+- **slow** - Relaxed 2000ms animation
+- **subtle** - Minimal intensity (0.3)
+- **prominent** - High intensity (0.9)
+- **materialLight** - Material Design light colors
+- **materialDark** - Material Design dark colors
+
+---
+
+## ♿ Accessibility
+
+Automatic support for system accessibility settings and reduced motion preferences.
+
+```dart
+// Automatically respects MediaQuery.disableAnimations
+// Animation is still shown but with reduced motion
+
+AdaptiveShimmer(
+  loading: isLoading,
+  child: MyWidget(),
+)
+
+// Check accessibility settings manually
+if (ShimmerAccessibility.shouldReduceMotion()) {
+  // Use slower animation
+}
+
+final safeDuration = ShimmerAccessibility.getSafeDuration();
+final safeIntensity = ShimmerAccessibility.getSafeIntensity();
 ```
 
 ---
@@ -360,6 +504,10 @@ SkeletonParagraph(
 | **Animation Types** | 3 | 1 | 1 |
 | **Directions** | 8 | Limited | 1 |
 | **Skeleton Widgets** | Yes | Yes | No |
+| **SmartSkeleton** | ✅ | Limited | ❌ |
+| **Animation Control** | ✅ | ❌ | ❌ |
+| **Theme System** | ✅ | Limited | ❌ |
+| **Accessibility** | ✅ | ❌ | ❌ |
 | **Screen Shimmer** | ✅ | ❌ | ❌ |
 | **Exclude Widgets** | ✅ | ❌ | ❌ |
 | **Staggered Effect** | ✅ | ❌ | ❌ |

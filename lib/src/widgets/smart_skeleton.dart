@@ -78,8 +78,7 @@ class SmartSkeletonConfig {
 
   bool get useMemoization => cacheStrategy != CacheStrategy.disabled;
 
-  bool get allowNestedSkeletons =>
-      nestingStrategy != NestingStrategy.disabled;
+  bool get allowNestedSkeletons => nestingStrategy != NestingStrategy.disabled;
 
   /// Default configuration - replaces text and images
   static const SmartSkeletonConfig defaultConfig = SmartSkeletonConfig();

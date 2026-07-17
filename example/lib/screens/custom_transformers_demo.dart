@@ -73,7 +73,8 @@ class _CustomTransformersDemoScreenState
               SmartSkeleton(
                 loading: isLoading,
                 config: SmartSkeletonConfig(
-                  replacementStrategy: SkeletonReplacementStrategy.textAndImages,
+                  replacementStrategy:
+                      SkeletonReplacementStrategy.textAndImages,
                   customTransformers: [
                     // Custom transformer for CustomCard
                     SkeletonTransformer(

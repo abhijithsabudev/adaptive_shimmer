@@ -2,66 +2,50 @@
 
 <div align="center">
 
-**The most powerful, lightweight skeleton loader for Flutter.** Zero dependencies, infinite possibilities.
+**The ultimate skeleton loader for Flutter.** Zero dependencies, maximum power.
 
 [![Pub Version](https://img.shields.io/pub/v/adaptive_shimmer)](https://pub.dev/packages/adaptive_shimmer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/abhijithsabudev/adaptive_shimmer?style=flat)](https://github.com/abhijithsabudev/adaptive_shimmer)
 
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Examples](#-examples) • [API](#-api-reference)
+[Why Choose This?](#-why-choose-adaptive-shimmer) • [Get Started](#-installation) • [Examples](#-code-examples) • [Learn More](#-advanced-features)
 
 </div>
 
 ---
 
-## ✨ Features
+## 🚀 Why Choose Adaptive Shimmer?
 
-### 🎯 Core Features
-- **Zero External Dependencies** - Pure Flutter, no bloat
-- **Multiple Animation Types** - Shimmer, Pulse, Combined
-- **8-Direction Shimmer** - LTR, RTL, TTB, BTB, and 4 diagonal directions
-- **Staggered Shimmer** - Cascade effect for multiple widgets
-- **Smooth Transitions** - Elegant fade from loading to content
-- **Screen-Wide Shimmer** - Page-level loading states
-- **Shimmer Exclude** - Keep certain widgets visible during loading
-- **Intensity Control** - Adjust shimmer brightness (0.0 - 1.0)
-- **Animation Control** - Pause/resume/stop animations with ShimmerController
-- **Theme System** - 8 pre-built themes + custom configuration
-- **Accessibility** - Automatic motion preference detection
-
-### 🤖 Smart Skeleton Generation
-- **SmartSkeleton** - Automatically transform widgets to skeletons
-- **Shape Detection** - Respects ClipRRect, ClipOval for shape-aware skeletons
-- **Empty Space Handling** - Fill SizedBox and Padding areas during loading
-- **Intelligent Config** - Default, aggressive, conservative, and fill modes
-
-### 📦 Pre-built Components
-- **Skeleton Widgets** - Box, Circle, Line, Paragraph
-- **Themed Support** - Auto light/dark mode detection
-- **Custom Colors & Gradients** - Full customization
-- **Highly Performant** - GPU-accelerated animations
+| Feature | Details |
+|---------|---------|
+| **Zero Dependencies** | Pure Flutter, no external packages |
+| **One Line of Code** | Wrap any widget, get instant skeleton loading |
+| **Smart Auto-Detection** | Automatically transforms your widgets to skeletons |
+| **8 Directions** | LTR, RTL, TTB, BTB, Diagonal, Wave, and more |
+| **Complete Control** | Pause, resume, stop animations with `ShimmerController` |
+| **Beautiful Themes** | 8 built-in presets + unlimited custom options |
+| **Accessibility First** | Respects system motion preferences automatically |
+| **Advanced Features** | Custom transformers, nested skeletons, memoization |
+| **Production Ready** | Enterprise-grade Flutter apps |
 
 ---
 
 ## 📦 Installation
 
-Add to your `pubspec.yaml`:
-
-```yaml
-dependencies:
-  adaptive_shimmer: ^1.1.0
+```bash
+flutter pub add adaptive_shimmer
 ```
 
-Then run:
-```bash
-flutter pub get
+Or add to `pubspec.yaml`:
+```yaml
+dependencies:
+  adaptive_shimmer: ^1.2.0
 ```
 
 ---
 
-## 🚀 Quick Start
+## ⚡ Code Examples
 
-### 1. Basic Shimmer (Widget-level)
+### 1️⃣ Basic Loading (One Line!)
 
 ```dart
 import 'package:adaptive_shimmer/adaptive_shimmer.dart';
@@ -72,432 +56,255 @@ AdaptiveShimmer(
 )
 ```
 
-### 2. Screen-Wide Shimmer (Page-level)
+**That's it!** Shimmer applied, automatic on/off.
+
+---
+
+### 2️⃣ Auto-Transform with SmartSkeleton
+
+No need for separate skeleton widgets!
 
 ```dart
-ScreenShimmer(
+SmartSkeleton(
   loading: isLoading,
-  child: Scaffold(
-    appBar: AppBar(title: Text('My App')),
-    body: MyPageContent(),
+  child: Column(
+    children: [
+      Text('Product Name'),
+      Image.network(productUrl),
+      Text('Price: $99.99'),
+    ],
   ),
 )
 ```
 
-### 3. Staggered Shimmer (Cascade effect)
+Automatically converts:
+- `Text()` → Skeleton lines
+- `Image()` → Skeleton boxes  
+- Respects shapes & borders
+
+---
+
+### 3️⃣ ListView/GridView Skeletons
+
+Perfect for dynamic lists:
+
+```dart
+SmartCollectionSkeleton(
+  loading: isLoading,
+  type: CollectionType.list,  // or .grid
+  skeletonConfig: CollectionSkeletonConfig(
+    itemCount: 5,
+    itemHeight: 120,
+  ),
+  child: MyListView(),
+)
+```
+
+---
+
+### 4️⃣ Animation Control
+
+```dart
+final controller = ShimmerController();
+
+AdaptiveShimmer(
+  loading: true,
+  controller: controller,
+  child: MyWidget(),
+)
+
+controller.pause();    // Pause
+controller.resume();   // Resume
+controller.stop();     // Stop
+controller.toggle();   // Toggle
+```
+
+---
+
+### 5️⃣ Themes (8 Built-in)
+
+```dart
+AdaptiveShimmer.withTheme(
+  loading: isLoading,
+  theme: ShimmerTheme.dark,  // light, fast, slow, subtle, prominent
+  child: MyWidget(),
+)
+```
+
+Or custom:
+```dart
+theme: ShimmerTheme.custom(
+  baseColor: Colors.grey[300],
+  highlightColor: Colors.white,
+  duration: Duration(milliseconds: 1200),
+  intensity: 0.6,
+)
+```
+
+---
+
+### 6️⃣ Staggered Effect
 
 ```dart
 StaggeredShimmer(
   children: [
-    ShimmerBox(width: 300, height: 100),
+    SkeletonBox(width: 300, height: 100),
     SizedBox(height: 16),
-    ShimmerLine(width: 250),
+    SkeletonLine(width: 250),
     SizedBox(height: 8),
-    ShimmerLine(width: 200),
+    SkeletonLine(width: 200),
   ],
   staggerDuration: Duration(milliseconds: 200),
 )
-```
-
-### 4. Smooth Transition
-
-```dart
-ShimmerTransition(
-  loading: isLoading,
-  loadingChild: SkeletonParagraph(width: double.infinity),
-  child: ActualContent(),
-  transitionDuration: Duration(milliseconds: 500),
-)
-```
-
----
-
-## 🤖 SmartSkeleton - Automatic Widget Transformation
-
-Automatically convert your actual UI widgets into skeleton loaders! No manual templates needed.
-
-```dart
-// SmartSkeleton intelligently detects and transforms widgets
-SmartSkeleton(
-  loading: isLoading,
-  child: YourCompleteWidget(), // Text → SkeletonLine, Image → SkeletonBox, etc.
-)
-```
-
-### Features
-- **Auto Detection** - Identifies Text, Image, Container, Row, Column, etc.
-- **Shape Aware** - Respects ClipRRect borderRadius and ClipOval for circular skeletons
-- **Empty Space Filling** - Optional filling of SizedBox and Padding areas
-- **Multiple Presets** - Choose configuration that fits your needs
-
-### Configuration Modes
-
-```dart
-// Default: Replace text and images only
-SmartSkeleton(
-  loading: true,
-  config: SmartSkeletonConfig.defaultConfig,
-  child: MyWidget(),
-)
-
-// Aggressive: Replace containers too
-SmartSkeleton(
-  loading: true,
-  config: SmartSkeletonConfig.aggressive,
-  child: MyWidget(),
-)
-
-// Fill Mode: Include empty space and padding
-SmartSkeleton(
-  loading: true,
-  config: SmartSkeletonConfig.fillMode,
-  child: MyWidget(),
-)
-
-// Conservative: Text only
-SmartSkeleton(
-  loading: true,
-  config: SmartSkeletonConfig.conservative,
-  child: MyWidget(),
-)
-```
-
----
-
-## 🎮 Animation Control with ShimmerController
-
-Control shimmer animations programmatically - pause, resume, stop whenever you need.
-
-```dart
-final shimmerController = ShimmerController();
-
-AdaptiveShimmer(
-  loading: true,
-  controller: shimmerController,
-  child: MyWidget(),
-)
-
-// Control the animation
-shimmerController.pause();      // Pause
-shimmerController.resume();     // Resume
-shimmerController.toggle();     // Pause/Resume toggle
-shimmerController.stop();       // Stop permanently
-```
-
----
-
-## 🎨 Theme System
-
-Use pre-built themes or create custom ones for consistent styling.
-
-```dart
-// Using a theme preset
-AdaptiveShimmer.withTheme(
-  loading: isLoading,
-  theme: ShimmerTheme.dark,  // or .light, .fast, .slow, .subtle, .prominent
-  child: MyWidget(),
-)
-
-// Create a custom theme
-AdaptiveShimmer.withTheme(
-  loading: isLoading,
-  theme: ShimmerTheme.custom(
-    baseColor: Colors.grey[300],
-    highlightColor: Colors.white,
-    duration: Duration(milliseconds: 1000),
-    intensity: 0.5,
-  ),
-  child: MyWidget(),
-)
-```
-
-### Available Theme Presets
-- **light** - Light mode with subtle animation
-- **dark** - Dark mode with higher contrast
-- **fast** - Quick 800ms animation
-- **slow** - Relaxed 2000ms animation
-- **subtle** - Minimal intensity (0.3)
-- **prominent** - High intensity (0.9)
-- **materialLight** - Material Design light colors
-- **materialDark** - Material Design dark colors
-
----
-
-## ♿ Accessibility
-
-Automatic support for system accessibility settings and reduced motion preferences.
-
-```dart
-// Automatically respects MediaQuery.disableAnimations
-// Animation is still shown but with reduced motion
-
-AdaptiveShimmer(
-  loading: isLoading,
-  child: MyWidget(),
-)
-
-// Check accessibility settings manually
-if (ShimmerAccessibility.shouldReduceMotion()) {
-  // Use slower animation
-}
-
-final safeDuration = ShimmerAccessibility.getSafeDuration();
-final safeIntensity = ShimmerAccessibility.getSafeIntensity();
 ```
 
 ---
 
 ## 🎨 Animation Types
 
-### Shimmer (Default)
-Classic left-to-right wave effect.
-
 ```dart
-AdaptiveShimmer(
-  loading: true,
-  animationType: AnimationType.shimmer,
-  child: MyWidget(),
-)
+AnimationType.shimmer,    // Wave effect (default)
+AnimationType.pulse,      // Fade in/out
+AnimationType.combined,   // Both effects
 ```
 
-### Pulse
-Smooth fade in/out effect.
+---
+
+## 🧭 8 Directions
 
 ```dart
-AdaptiveShimmer(
-  loading: true,
-  animationType: AnimationType.pulse,
-  child: MyWidget(),
-)
+ShimmerDirection.ltr,            // Left to Right
+ShimmerDirection.rtl,            // Right to Left
+ShimmerDirection.ttb,            // Top to Bottom
+ShimmerDirection.btt,            // Bottom to Top
+ShimmerDirection.diagonalLTR,    // Diagonal ↘
+ShimmerDirection.diagonalRTL,    // Diagonal ↙
+ShimmerDirection.diagonalBLTR,   // Diagonal ↗
+ShimmerDirection.wave,           // Wave pattern
 ```
 
-### Combined
-Shimmer + Pulse for enhanced feedback.
+---
+
+## ⚙️ Smart Configuration Strategies
+
+Clean, semantic API using enums:
 
 ```dart
-AdaptiveShimmer(
-  loading: true,
-  animationType: AnimationType.combined,
-  child: MyWidget(),
+SmartSkeletonConfig(
+  // What to replace?
+  replacementStrategy: SkeletonReplacementStrategy.textAndImages,
+  
+  // Fill empty space?
+  fillingStrategy: FillingStrategy.spaceOnly,
+  
+  // Cache performance?
+  cacheStrategy: CacheStrategy.enabled,
+  
+  // Allow nesting?
+  nestingStrategy: NestingStrategy.limited,
 )
 ```
 
 ---
 
-## 🧭 Direction Control
+## 🔧 Advanced Features
 
-Apply shimmer in any direction:
-
+### Nested Skeletons
 ```dart
-AdaptiveShimmer(
-  loading: true,
-  direction: ShimmerDirection.diagonalLTR, // or .ltr, .rtl, .ttb, .wave, etc.
-  child: MyWidget(),
-)
-```
-
-**Supported Directions:**
-- `ltr` - Left to Right
-- `rtl` - Right to Left  
-- `ttb` - Top to Bottom
-- `btt` - Bottom to Top
-- `diagonalLTR` - Diagonal (top-left to bottom-right)
-- `diagonalRTL` - Diagonal (top-right to bottom-left)
-- `diagonalBLTR` - Diagonal (bottom-left to top-right)
-- `wave` - Wave pattern
-
----
-
-## 💡 Advanced Features
-
-### Intensity Control
-
-Control shimmer brightness:
-
-```dart
-AdaptiveShimmer(
-  loading: true,
-  intensity: 0.5, // 0.0 (subtle) to 1.0 (bright)
-  child: MyWidget(),
-)
-```
-
-### Custom Colors
-
-```dart
-AdaptiveShimmer(
-  loading: true,
-  baseColor: Color(0xFFE0E0E0),
-  highlightColor: Color(0xFFFFF8E1),
-  child: MyWidget(),
-)
-```
-
-### Exclude Widgets from Screen Shimmer
-
-```dart
-ScreenShimmer(
-  loading: isLoading,
-  child: Column(
-    children: [
-      // Will shimmer
-      MyContent(),
-      
-      // Won't shimmer - stays interactive
-      ShimmerExclude(
-        child: ElevatedButton(
-          onPressed: retryFunction,
-          child: Text('Retry'),
-        ),
-      ),
-    ],
+SmartSkeleton(
+  loading: outerLoading,
+  child: SmartSkeleton(
+    loading: innerLoading,
+    child: InnerWidget(),
   ),
 )
 ```
 
+### Performance Optimization
+```dart
+SmartSkeletonConfig(
+  cacheStrategy: CacheStrategy.aggressive,
+)
+
+final stats = SmartSkeleton.getCacheStats();
+SmartSkeleton.clearCache();
+```
+
+### Testing Utilities
+```dart
+import 'package:adaptive_shimmer/testing_utils.dart';
+
+ShimmerTester.findSkeletonWidgets(context);
+ShimmerTester.countSkeletonsByType(context);
+ShimmerTester.verifySkeletonCount(context, expected: 5);
+```
+
+### Custom Transformers
+
+```dart
+SmartSkeleton(
+  loading: isLoading,
+  config: SmartSkeletonConfig(
+    customTransformers: [
+      SkeletonTransformer(
+        predicate: (w) => w is MyCustomWidget,
+        transformer: (w) => SkeletonBox(width: 200, height: 100),
+        priority: 10,
+      ),
+    ],
+  ),
+  child: YourWidget(),
+)
+```
+
 ---
 
-## 📱 Examples
-
-### Product Card
+## 📦 Pre-built Components
 
 ```dart
-ShimmerTransition(
-  loading: isLoading,
-  loadingChild: SkeletonProductCard(),
-  child: ProductCard(product: product),
-)
-```
+SkeletonBox(width: 100, height: 100)        // Rectangle
+SkeletonCircle(radius: 40)                  // Circle
+SkeletonLine(width: 200, height: 12)        // Text line
+SkeletonParagraph(width: double.infinity)   // Multi-line
 
-### Profile Page
-
-```dart
-ScreenShimmer(
-  loading: isLoading,
-  child: ProfilePage(),
-)
-```
-
-### Feed List
-
-```dart
-StaggeredShimmer(
-  children: List.generate(5, (_) => ShimmerBox(width: double.infinity, height: 200)),
-  staggerDuration: Duration(milliseconds: 150),
-)
+ScreenShimmer(...)                          // Full-page loading
+ShimmerTransition(...)                      // Smooth fade-in
+StaggeredShimmer(...)                       // Cascade effect
+CollectionSkeleton(...)                     // List/grid skeletons
 ```
 
 ---
 
-## 📚 API Reference
+## 💡 Best Practices
 
-### AdaptiveShimmer
+✅ Use `SmartSkeleton` for auto-detection  
+✅ Set realistic `itemCount` for collections  
+✅ Theme consistently with presets  
+✅ Motion preferences are automatic  
+✅ Cache for high-frequency transforms  
+✅ Test with testing utilities  
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `child` | `Widget` | required | Widget to apply shimmer to |
-| `loading` | `bool` | required | Show loading state |
-| `enabled` | `bool` | `true` | Enable/disable animation |
-| `duration` | `Duration` | 1500ms | Animation duration |
-| `animationType` | `AnimationType` | `shimmer` | Animation style |
-| `direction` | `ShimmerDirection` | `ltr` | Shimmer direction |
-| `intensity` | `double` | `0.7` | Brightness (0.0-1.0) |
-| `baseColor` | `Color` | grey[300] | Background color |
-| `highlightColor` | `Color` | grey[100] | Highlight color |
+---
 
-### ScreenShimmer
+## 🎯 Use Cases
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `child` | `Widget` | required | Screen content |
-| `loading` | `bool` | required | Show loading state |
-| `enabled` | `bool` | `true` | Enable/disable animation |
-| `duration` | `Duration` | 1500ms | Animation duration |
-| `animationType` | `AnimationType` | `shimmer` | Animation style |
-| `baseColor` | `Color` | grey[300] | Background color |
-| `highlightColor` | `Color` | grey[100] | Highlight color |
-
-### StaggeredShimmer
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `children` | `List<Widget>` | required | Widgets to animate |
-| `staggerDuration` | `Duration` | 200ms | Delay between children |
-| `animationDuration` | `Duration` | 1500ms | Animation duration |
-| `animationType` | `AnimationType` | `shimmer` | Animation style |
-| `direction` | `ShimmerDirection` | `ltr` | Shimmer direction |
-| `intensity` | `double` | `0.7` | Brightness (0.0-1.0) |
-| `repeat` | `bool` | `true` | Repeat animation |
-
-### ShimmerTransition
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `loading` | `bool` | required | Show loading state |
-| `loadingChild` | `Widget` | required | Loading placeholder |
-| `child` | `Widget` | required | Actual content |
-| `transitionDuration` | `Duration` | 500ms | Fade duration |
-| `curve` | `Curve` | easeInOut | Animation curve |
-| `animationType` | `AnimationType` | `shimmer` | Loading animation |
-
-### ShimmerExclude
-
-```dart
-ShimmerExclude(
-  child: YourWidget(), // Won't shimmer in ScreenShimmer
-)
-```
-
-### Skeleton Widgets
-
-#### SkeletonBox
-```dart
-SkeletonBox(
-  width: 200,
-  height: 100,
-  borderRadius: 8,
-)
-```
-
-#### SkeletonCircle
-```dart
-SkeletonCircle(radius: 40)
-```
-
-#### SkeletonLine
-```dart
-SkeletonLine(
-  width: 150,
-  height: 10,
-  borderRadius: 5,
-)
-```
-
-#### SkeletonParagraph
-```dart
-SkeletonParagraph(
-  width: double.infinity,
-  lineCount: 3,
-  lineHeight: 10,
-  spacing: 8,
-)
-```
+✓ E-commerce products  
+✓ Social media feeds  
+✓ Search results  
+✓ User profiles  
+✓ News articles  
+✓ Chat messages  
+✓ Data tables  
+✓ Dashboards  
 
 ---
 
 ## ⚡ Performance
 
-- **Zero Dependencies** - Minimal bundle size
-- **GPU Accelerated** - ShaderMask-based animations
-- **Efficient Rendering** - Only redraws during animation frames
-- **Memory Optimized** - Minimal widget overhead
-- **Smooth 60 FPS** - Even on older devices
-
----
-
-## 🎯 Comparison with Alternatives
-
-| Feature | Adaptive Shimmer | Skeletonizer | Shimmer |
+- GPU-accelerated animations (ShaderMask)
+- Built-in transformation caching
+- Zero re-renders on rebuilds
+- ~10KB package size (no dependencies)
 |---------|-----------------|--------------|---------|
 | **Bundle Size** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 | **Dependencies** | None | None | None |
@@ -767,97 +574,36 @@ Container(
 )
 ```
 
-## API Reference
+---
 
-### AdaptiveShimmer
+## 📄 License
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `child` | `Widget` | required | The widget to show shimmer effect on |
-| `loading` | `bool` | required | Whether to show loading state |
-| `enabled` | `bool` | `true` | Whether animation is enabled |
-| `duration` | `Duration` | 1500ms | Animation duration |
-| `animationType` | `AnimationType` | `shimmer` | Type of animation |
-| `baseColor` | `Color` | grey[300] | Background color |
-| `highlightColor` | `Color` | grey[100] | Highlight/wave color |
+MIT License - feel free to use in commercial projects
 
-### SkeletonBox
+---
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `width` | `double` | required | Box width |
-| `height` | `double` | required | Box height |
-| `borderRadius` | `double` | `8.0` | Corner radius |
+## 🤝 Contributing
 
-### SkeletonCircle
+Found a bug or have a feature idea? Contributions welcome!
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `radius` | `double` | required | Circle radius |
+- [GitHub Issues](https://github.com/abhijithsabudev/adaptive_shimmer/issues)
+- [GitHub Discussions](https://github.com/abhijithsabudev/adaptive_shimmer/discussions)
 
-### SkeletonLine
+---
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `width` | `double` | required | Line width |
-| `height` | `double` | `8.0` | Line height |
-| `borderRadius` | `double` | `4.0` | Corner radius |
+## 🙏 Support
 
-### SkeletonParagraph
+Love this package? Please:
+- ⭐ Star on [GitHub](https://github.com/abhijithsabudev/adaptive_shimmer)
+- 👍 Give it a like on [pub.dev](https://pub.dev/packages/adaptive_shimmer)
+- 📣 Share with the Flutter community
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `lineCount` | `int` | `3` | Number of lines |
-| `width` | `double` | required | Width of lines |
-| `lineHeight` | `double` | `10.0` | Height of each line |
-| `spacing` | `double` | `8.0` | Space between lines |
+---
 
-### ScreenShimmer
+<div align="center">
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `child` | `Widget` | required | The widget to show shimmer effect on (typically your screen) |
-| `loading` | `bool` | required | Whether to show loading state |
-| `enabled` | `bool` | `true` | Whether animation is enabled |
-| `duration` | `Duration` | 1500ms | Animation duration |
-| `animationType` | `AnimationType` | `shimmer` | Type of animation |
-| `baseColor` | `Color` | grey[300] | Background color |
-| `highlightColor` | `Color` | grey[100] | Highlight/wave color |
+**Made with ❤️ by the Flutter community**
 
-### ShimmerExclude
+[Pub.dev](https://pub.dev/packages/adaptive_shimmer) • [GitHub](https://github.com/abhijithsabudev/adaptive_shimmer)
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `child` | `Widget` | required | Widget to exclude from shimmer effect |
-
-## Performance
-
-- **Zero external dependencies** - smaller bundle size
-- **GPU accelerated** - uses ShaderMask for smooth animations
-- **Efficient re-renders** - only redraws during animation frames
-- **Memory optimized** - minimal widget tree overhead
-
-## Comparison with Alternatives
-
-| Feature | Adaptive Shimmer | Skeletonizer | Shimmer |
-|---------|-----------------|--------------|---------|
-| Bundle Size | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
-| Dependencies | None | None | None |
-| Animation Types | 3 | 1 | 1 |
-| Skeleton Widgets | Yes | Yes | No |
-| Screen Shimmer | Yes | No | No |
-| Exclude Widgets | Yes | No | No |
-| Custom Shapes | Yes | Yes | Limited |
-| Ease of Use | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
-
-## License
-
-MIT License - See LICENSE file for details
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Support
-
-For issues, questions, or suggestions, please open an issue on [GitHub](https://github.com/abhijithsabudev/adaptive_shimmer). 
+</div> 

@@ -1,3 +1,72 @@
+## 1.2.0 - Semantic API & Advanced Features
+
+### ✨ Major Updates
+- **Semantic Strategy Enums**: Replaced boolean parameters with clear enum strategies
+  - `SkeletonReplacementStrategy`: textOnly, imagesOnly, textAndImages, all, none
+  - `FillingStrategy`: none, spaceOnly, paddingOnly, all
+  - `CacheStrategy`: disabled, enabled, aggressive
+  - `NestingStrategy`: disabled, limited, unlimited
+  - Backward compatible with convenience getters
+- **Custom Transformers**: Advanced widget transformation system
+  - `SkeletonTransformer` class with predicate and priority support
+  - `SkeletonTransformerPredicate` for flexible widget matching
+  - Priority-based execution order for multiple transformers
+  - Named transformers for debugging
+- **CollectionSkeleton System**: Solve ListView/GridView skeleton issues
+  - `SmartCollectionSkeleton` for dynamic list/grid skeletons
+  - `CollectionType` enum (list, grid) with type-safe API
+  - Support for unknown item counts
+  - Configurable `itemHeight`, `spacing`, `borderRadius`
+- **Performance Memoization**: Automatic transformation caching
+  - `TransformationCache` with configurable size limits (default 1000)
+  - `CacheStats` for monitoring cache utilization
+  - Debug mode with cache hit/miss logging
+  - `SmartSkeleton.getCacheStats()` and `clearCache()`
+- **Nested Skeleton Support**: Multi-level skeleton rendering
+  - `NestedSkeletonScope` (InheritedWidget) for level tracking
+  - `NestingStrategy` to control nesting behavior
+  - Prevents infinite nesting loops
+  - Debug output for nesting levels
+- **Testing Utilities**: Enterprise-grade testing support
+  - `ShimmerTester` with element visitor pattern
+  - `findSkeletonWidgets()`, `countSkeletonsByType()`, `verifySkeletonCount()`
+  - `MockShimmerController` for test doubles
+  - `ShimmerTestHarness` and `SkeletonTestWidget`
+  - Performance testing with cache statistics
+
+### 🎨 API Improvements
+- **SmartSkeletonConfig**: New semantic API
+  - `replacementStrategy`, `fillingStrategy`, `cacheStrategy`, `nestingStrategy`
+  - Convenience getters for backward compatibility
+  - Enhanced preset configs (defaultConfig, aggressive, conservative, fillMode)
+- **Exports**: Added new public API surface
+  - `skeleton_strategy.dart` with all strategy enums
+  - `smart_skeleton_transformers.dart` utilities
+  - `testing_utils.dart` for test support
+
+### 📱 Demo App Enhancements
+- **5 New Advanced Demo Screens**:
+  - Collection Skeleton Demo: ListView ↔ GridView switching
+  - Custom Transformers Demo: Widget transformation patterns with cache stats
+  - Nested Skeletons Demo: Multi-level skeleton rendering
+  - Memoization Demo: Cache performance optimization
+  - Testing Utils Demo: Skeleton analysis and widget tree inspection
+- **Updated Navigation**: Total of 11 demo screens with clear organization
+
+### ✅ Improvements
+- Replaced context scope issues with proper architecture
+- Improved SmartSkeleton performance with memoization
+- Better error handling for custom transformers
+- Enhanced documentation with new examples
+
+### 📚 Documentation
+- Completely redesigned README (more compelling, easier to read)
+- Added advanced features section
+- Included code examples for all 6 strategies
+- Best practices guide
+
+---
+
 ## 1.1.0 - Enhanced SmartSkeleton with Empty Space Handling
 
 ### ✨ New Features

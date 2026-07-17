@@ -6,6 +6,11 @@ import 'screens/animation_type_demo.dart';
 import 'screens/templates_demo.dart';
 import 'screens/staggered_demo.dart';
 import 'screens/empty_space_demo.dart';
+import 'screens/collection_skeleton_demo.dart';
+import 'screens/custom_transformers_demo.dart';
+import 'screens/nested_skeletons_demo.dart';
+import 'screens/memoization_demo.dart';
+import 'screens/testing_utils_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -73,6 +78,37 @@ class _MyHomePageState extends State<MyHomePage> {
       description: 'Fill padding and SizedBox',
       icon: Icons.space_bar,
       screen: const EmptySpaceDemoScreen(),
+    ),
+    // Advanced Features
+    DemoItem(
+      title: 'Collection Skeletons',
+      description: 'ListView & GridView skeletons',
+      icon: Icons.list,
+      screen: const CollectionSkeletonDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Custom Transformers',
+      description: 'Advanced widget transformation',
+      icon: Icons.transform,
+      screen: const CustomTransformersDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Nested Skeletons',
+      description: 'Skeletons within skeletons',
+      icon: Icons.layers,
+      screen: const NestedSkeletonsDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Memoization',
+      description: 'Performance optimization',
+      icon: Icons.speed,
+      screen: const MemoizationDemoScreen(),
+    ),
+    DemoItem(
+      title: 'Testing Utilities',
+      description: 'Test & debug skeletons',
+      icon: Icons.bug_report,
+      screen: const TestingUtilsDemoScreen(),
     ),
   ];
 

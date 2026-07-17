@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import '../models/animation_type.dart';
 import '../models/shimmer_direction.dart';
+import '../models/skeleton_strategy.dart';
+import '../utils/smart_skeleton_transformers.dart';
 import 'skeleton_widgets.dart';
 
 /// Smart skeleton configuration for auto-detecting and replacing widgets
 class SmartSkeletonConfig {
-  /// Replace Text widgets with skeleton lines
-  final bool replaceText;
+  /// Strategy for which widgets to replace with skeletons
+  final SkeletonReplacementStrategy replacementStrategy;
 
-  /// Replace Image widgets with skeleton boxes
-  final bool replaceImages;
+  /// Strategy for filling empty space
+  final FillingStrategy fillingStrategy;
 
-  /// Replace Container widgets with skeleton boxes
-  final bool replaceContainers;
+  /// Strategy for widget transformation caching
+  final CacheStrategy cacheStrategy;
 
-  /// Fill empty SizedBox areas with skeleton color
-  final bool fillEmptySpace;
-
-  /// Fill padding areas with skeleton background
-  final bool fillPadding;
+  /// Strategy for handling nested skeletons
+  final NestingStrategy nestingStrategy;
 
   /// Color for skeleton placeholders
   final Color skeletonColor;
@@ -35,47 +34,75 @@ class SmartSkeletonConfig {
   /// Shimmer intensity (0.0 - 1.0)
   final double intensity;
 
+  /// Custom transformers for user-defined widget types
+  final List<SkeletonTransformer> customTransformers;
+
+  /// Debug mode - prints transformation info
+  final bool debugMode;
+
   const SmartSkeletonConfig({
-    this.replaceText = true,
-    this.replaceImages = true,
-    this.replaceContainers = false,
-    this.fillEmptySpace = false,
-    this.fillPadding = false,
+    this.replacementStrategy = SkeletonReplacementStrategy.textAndImages,
+    this.fillingStrategy = FillingStrategy.none,
+    this.cacheStrategy = CacheStrategy.enabled,
+    this.nestingStrategy = NestingStrategy.limited,
     this.skeletonColor = const Color(0xFFE0E0E0),
     this.highlightColor = const Color(0xFFF5F5F5),
     this.animationType = AnimationType.shimmer,
     this.direction = ShimmerDirection.ltr,
     this.intensity = 0.7,
+    this.customTransformers = const [],
+    this.debugMode = false,
   });
+
+  /// Convenience getters for backward compatibility and readability
+  bool get replaceText =>
+      replacementStrategy == SkeletonReplacementStrategy.textOnly ||
+      replacementStrategy == SkeletonReplacementStrategy.textAndImages ||
+      replacementStrategy == SkeletonReplacementStrategy.all;
+
+  bool get replaceImages =>
+      replacementStrategy == SkeletonReplacementStrategy.imagesOnly ||
+      replacementStrategy == SkeletonReplacementStrategy.textAndImages ||
+      replacementStrategy == SkeletonReplacementStrategy.all;
+
+  bool get replaceContainers =>
+      replacementStrategy == SkeletonReplacementStrategy.all;
+
+  bool get fillEmptySpace =>
+      fillingStrategy == FillingStrategy.spaceOnly ||
+      fillingStrategy == FillingStrategy.all;
+
+  bool get fillPadding =>
+      fillingStrategy == FillingStrategy.paddingOnly ||
+      fillingStrategy == FillingStrategy.all;
+
+  bool get useMemoization => cacheStrategy != CacheStrategy.disabled;
+
+  bool get allowNestedSkeletons =>
+      nestingStrategy != NestingStrategy.disabled;
 
   /// Default configuration - replaces text and images
   static const SmartSkeletonConfig defaultConfig = SmartSkeletonConfig();
 
   /// Aggressive mode - replaces all replaceable widgets
   static const SmartSkeletonConfig aggressive = SmartSkeletonConfig(
-    replaceText: true,
-    replaceImages: true,
-    replaceContainers: true,
-    fillEmptySpace: false,
-    fillPadding: false,
+    replacementStrategy: SkeletonReplacementStrategy.all,
+    fillingStrategy: FillingStrategy.none,
+    cacheStrategy: CacheStrategy.aggressive,
   );
 
   /// Fill mode - fills empty space and padding
   static const SmartSkeletonConfig fillMode = SmartSkeletonConfig(
-    replaceText: true,
-    replaceImages: true,
-    replaceContainers: false,
-    fillEmptySpace: true,
-    fillPadding: true,
+    replacementStrategy: SkeletonReplacementStrategy.textAndImages,
+    fillingStrategy: FillingStrategy.all,
+    cacheStrategy: CacheStrategy.enabled,
   );
 
   /// Conservative mode - only replaces text
   static const SmartSkeletonConfig conservative = SmartSkeletonConfig(
-    replaceText: true,
-    replaceImages: false,
-    replaceContainers: false,
-    fillEmptySpace: false,
-    fillPadding: false,
+    replacementStrategy: SkeletonReplacementStrategy.textOnly,
+    fillingStrategy: FillingStrategy.none,
+    cacheStrategy: CacheStrategy.enabled,
   );
 }
 
@@ -84,6 +111,9 @@ class SmartSkeleton extends StatelessWidget {
   final Widget child;
   final bool loading;
   final SmartSkeletonConfig config;
+
+  /// Memoization cache (shared across instances for performance)
+  static final TransformationCache _cache = TransformationCache();
 
   const SmartSkeleton({
     super.key,
@@ -98,11 +128,31 @@ class SmartSkeleton extends StatelessWidget {
       return child;
     }
 
-    return _SmartSkeletonBuilder(
-      child: child,
-      config: config,
+    return NestedSkeletonScope(
+      nestingLevel: _getNestingLevel(context),
+      maxNestingLevel: 5,
+      debug: config.debugMode,
+      child: _SmartSkeletonBuilder(
+        child: child,
+        config: config,
+      ),
     );
   }
+
+  /// Get current nesting level from context
+  int _getNestingLevel(BuildContext context) {
+    final scope = NestedSkeletonScope.of(context);
+    if (scope != null && config.allowNestedSkeletons) {
+      return scope.getNextNestingLevel();
+    }
+    return 0;
+  }
+
+  /// Get cache statistics (useful for debugging)
+  static CacheStats getCacheStats() => _cache.getStats();
+
+  /// Clear transformation cache
+  static void clearCache() => _cache.clear();
 }
 
 /// Builder that traverses and transforms child widgets

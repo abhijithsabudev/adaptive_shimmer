@@ -361,35 +361,26 @@ MIT License - See [LICENSE](LICENSE) file for details
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request to [GitHub](https://github.com/abhijithsabudev/adaptive_shimmer).
+Found a bug or have a feature idea? Contributions are welcome!
 
-### To contribute:
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- [Open an issue](https://github.com/abhijithsabudev/adaptive_shimmer/issues)
+- [Submit a PR](https://github.com/abhijithsabudev/adaptive_shimmer/pulls)
+- [Join discussions](https://github.com/abhijithsabudev/adaptive_shimmer/discussions)
 
 ---
 
 ## 💬 Support & Feedback
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/abhijithsabudev/adaptive_shimmer/issues)
-- **Email**: Contact us at support@adaptiveshimmer.dev
-- **Twitter**: [@adaptiveshimmer](https://twitter.com/adaptiveshimmer)
+Love this package? Please help:
+- ⭐ [Star on GitHub](https://github.com/abhijithsabudev/adaptive_shimmer)
+- 👍 [Like on pub.dev](https://pub.dev/packages/adaptive_shimmer)
+- 🐛 [Report bugs or request features](https://github.com/abhijithsabudev/adaptive_shimmer/issues)
+- 📢 Share with the Flutter community
+- ☕ [Buy me a coffee](https://buymeacoffee.com/abhijithsabudev)
 
 ---
 
-## 🌟 Show Your Support
-
-If you find this package helpful, please consider:
-- ⭐ Starring the [GitHub repository](https://github.com/abhijithsabudev/adaptive_shimmer)
-- 👍 Liking on [pub.dev](https://pub.dev/packages/adaptive_shimmer)
-- 📢 Sharing with your Flutter community
-
----
-
-**Built with ❤️ by [Abhijith Sabu](https://github.com/abhijithsabudev)**
+**Built with ❤️ by [Abhijith](https://github.com/abhijithsabudev)**
 )
 ```
 
@@ -574,18 +565,9 @@ Found a bug or have a feature idea? Contributions welcome!
 
 ---
 
-## 🙏 Support
-
-Love this package? Please:
-- ⭐ Star on [GitHub](https://github.com/abhijithsabudev/adaptive_shimmer)
-- 👍 Give it a like on [pub.dev](https://pub.dev/packages/adaptive_shimmer)
-- 📣 Share with the Flutter community
-
----
-
 <div align="center">
 
-**Made with ❤️ by the Flutter community**
+**Made with ❤️ for the Flutter community**
 
 [Pub.dev](https://pub.dev/packages/adaptive_shimmer) • [GitHub](https://github.com/abhijithsabudev/adaptive_shimmer)
 

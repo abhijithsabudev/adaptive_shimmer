@@ -1,0 +1,14 @@
+# Ignore example app files
+example/
+
+# Ignore IDE and build files
+.dart_tool/
+.packages
+build/
+*.iml
+.idea/
+.gradle/
+.env
+
+# Ignore test files
+test/

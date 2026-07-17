@@ -5,6 +5,7 @@ import 'screens/intensity_demo.dart';
 import 'screens/animation_type_demo.dart';
 import 'screens/templates_demo.dart';
 import 'screens/staggered_demo.dart';
+import 'screens/empty_space_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -67,15 +68,18 @@ class _MyHomePageState extends State<MyHomePage> {
       icon: Icons.inventory_2,
       screen: const TemplatesDemoScreen(),
     ),
+    DemoItem(
+      title: 'Empty Space Handling',
+      description: 'Fill padding and SizedBox',
+      icon: Icons.space_bar,
+      screen: const EmptySpaceDemoScreen(),
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: Text(widget.title), elevation: 0),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,16 +101,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     'Adaptive Shimmer',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Zero-dependency skeleton loader with shimmer animations',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white70,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
                   ),
                 ],
               ),
@@ -128,10 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
                     itemCount: demos.length,
                     itemBuilder: (_, index) {
                       final demo = demos[index];
@@ -273,10 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
+        Text(title, style: Theme.of(context).textTheme.labelMedium),
         const SizedBox(height: 8),
         Container(
           width: double.infinity,
@@ -310,11 +311,8 @@ class DemoCard extends StatelessWidget {
   final DemoItem demo;
   final VoidCallback onTap;
 
-  const DemoCard({
-    Key? key,
-    required this.demo,
-    required this.onTap,
-  }) : super(key: key);
+  const DemoCard({Key? key, required this.demo, required this.onTap})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -345,39 +343,40 @@ class DemoCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    demo.icon,
-                    size: 32,
-                    color: Colors.deepPurple,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    demo.title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    demo.description,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const Spacer(),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Icon(
-                      Icons.arrow_forward_rounded,
-                      color: Colors.deepPurple,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(demo.icon, size: 28, color: Colors.deepPurple),
+                    const SizedBox(height: 12),
+                    Text(
+                      demo.title,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      demo.description,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelSmall?.copyWith(color: Colors.grey[600]),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 12),
+                    const Align(
+                      alignment: Alignment.bottomRight,
+                      child: Icon(
+                        Icons.arrow_forward_rounded,
+                        size: 20,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

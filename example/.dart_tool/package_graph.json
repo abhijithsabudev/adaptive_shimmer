@@ -5,10 +5,9 @@
   "packages": [
     {
       "name": "example",
-      "version": "1.0.0+1",
+      "version": "0.1.0+1",
       "dependencies": [
         "adaptive_shimmer",
-        "cupertino_icons",
         "flutter"
       ],
       "devDependencies": [
@@ -18,7 +17,7 @@
     },
     {
       "name": "flutter_lints",
-      "version": "2.0.3",
+      "version": "6.0.0",
       "dependencies": [
         "lints"
       ]
@@ -49,11 +48,6 @@
       ]
     },
     {
-      "name": "cupertino_icons",
-      "version": "1.0.9",
-      "dependencies": []
-    },
-    {
       "name": "flutter",
       "version": "0.0.0",
       "dependencies": [
@@ -67,7 +61,7 @@
     },
     {
       "name": "lints",
-      "version": "2.1.1",
+      "version": "6.1.0",
       "dependencies": []
     },
     {

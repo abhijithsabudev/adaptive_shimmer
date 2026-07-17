@@ -1,12 +1,20 @@
 name: adaptive_shimmer
-description: "A lightweight, zero-dependency skeleton loader with shimmer and pulse animations, screen-wide shimmer, exclude widgets, and shape-adaptive capabilities."
-version: 1.0.0
+description: "A lightweight, zero-dependency skeleton loader with shimmer and pulse animations, screen-wide shimmer, exclude widgets, and shape-adaptive capabilities. Includes animation control, theme presets, accessibility support, and comprehensive skeleton templates."
+version: 1.1.0
 homepage: https://github.com/abhijithsabudev/adaptive_shimmer
 repository: https://github.com/abhijithsabudev/adaptive_shimmer
+issue_tracker: https://github.com/abhijithsabudev/adaptive_shimmer/issues
 
 environment:
   sdk: '>=3.2.1 <4.0.0'
   flutter: ">=1.17.0"
+
+topics:
+  - shimmer
+  - skeleton
+  - loader
+  - animation
+  - flutter-widget
 
 dependencies:
   flutter:
@@ -15,9 +23,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
-
+  flutter_lints: ^3.0.0
 
 flutter:
-
   uses-material-design: true

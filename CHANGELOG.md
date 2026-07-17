@@ -1,3 +1,44 @@
+## 1.1.0 - Enhanced SmartSkeleton with Empty Space Handling
+
+### ✨ New Features
+- **Empty Space Handling**: New `fillEmptySpace` and `fillPadding` config flags for SmartSkeleton
+  - Automatically fill SizedBox and Padding areas with skeleton color during loading
+  - `SmartSkeletonConfig.fillMode` preset for comprehensive skeleton coverage
+  - Perfect for layouts with spacing that should be filled during loading states
+- **Animation Control**: New `ShimmerController` for pause/resume/stop functionality
+  - Optional parameter for `AdaptiveShimmer` and `AdaptiveShimmer.withTheme()`
+  - State management: playing, paused, stopped states
+  - Useful for coordinating multiple shimmer effects
+- **Theme System**: Complete theme configuration with 8 presets
+  - `ShimmerTheme` immutable class with customizable colors, duration, intensity
+  - Presets: light, dark, fast, slow, subtle, prominent, materialLight, materialDark
+  - `AdaptiveShimmer.withTheme()` factory for convenient theme usage
+- **Accessibility Support**: Automatic motion preferences handling
+  - `ShimmerAccessibility` helper detects `MediaQuery.disableAnimations`
+  - Respects system accessibility settings
+  - Safe duration and intensity calculations
+- **SmartSkeleton Enhancements**: Improved intelligent widget transformation
+  - Fixed shimmer boundary overflow bug
+  - Better shape detection for ClipRRect and ClipOval
+  - Enhanced preset system: defaultConfig, aggressive, conservative, fillMode
+
+### 🎨 UI/UX Improvements
+- Added EmptySpaceDemoScreen to example app
+- Improved demo card layouts for better responsiveness
+- Better handling of network image errors
+
+### ✅ Bug Fixes
+- Fixed shimmer effect overflow on widget boundaries
+- Corrected SmartSkeleton config preset duplication
+- Improved Row/Column overflow handling in demo screens
+
+### 📚 Documentation Updates
+- Updated API documentation
+- Added advanced examples with state management
+- Added migration guide
+
+---
+
 ## 1.0.0 - Production Ready with Screen Shimmer
 
 ### 🎯 Major Features

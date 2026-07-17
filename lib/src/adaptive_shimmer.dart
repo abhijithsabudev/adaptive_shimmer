@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'widgets/shimmer_widget.dart';
 import 'models/animation_type.dart';
 import 'models/shimmer_direction.dart';
+import 'models/shimmer_theme.dart';
+import 'controllers/shimmer_controller.dart';
 
 /// Main adaptive shimmer widget
 ///
@@ -35,9 +37,14 @@ class AdaptiveShimmer extends StatelessWidget {
   /// Intensity of shimmer (0.0 - 1.0, where 1.0 is brightest)
   final double intensity;
 
+  /// Optional shimmer theme
+  final ShimmerTheme? theme;
+
+  /// Optional controller for animation playback
+  final ShimmerController? controller;
+
   const AdaptiveShimmer({
     super.key,
-    required this.child,
     required this.loading,
     this.enabled = true,
     this.duration = const Duration(milliseconds: 1500),
@@ -46,7 +53,35 @@ class AdaptiveShimmer extends StatelessWidget {
     this.highlightColor = const Color(0xFFF5F5F5),
     this.direction = ShimmerDirection.ltr,
     this.intensity = 0.7,
+    this.theme,
+    this.controller,
+    required this.child,
   });
+
+  /// Create shimmer with theme
+  factory AdaptiveShimmer.withTheme({
+    required bool loading,
+    required ShimmerTheme theme,
+    bool enabled = true,
+    AnimationType animationType = AnimationType.shimmer,
+    ShimmerDirection direction = ShimmerDirection.ltr,
+    ShimmerController? controller,
+    required Widget child,
+  }) {
+    return AdaptiveShimmer(
+      loading: loading,
+      enabled: enabled,
+      duration: theme.duration,
+      animationType: animationType,
+      baseColor: theme.baseColor,
+      highlightColor: theme.highlightColor,
+      direction: direction,
+      intensity: theme.intensity,
+      theme: theme,
+      controller: controller,
+      child: child,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +97,7 @@ class AdaptiveShimmer extends StatelessWidget {
       enabled: enabled,
       direction: direction,
       intensity: intensity,
+      controller: controller,
       child: child,
     );
   }

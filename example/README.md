@@ -1,6 +1,3 @@
 # example
 
-A sample Flutter project showing adaptive shimmer package.
-
-## Getting Started
-
+A new Flutter project.

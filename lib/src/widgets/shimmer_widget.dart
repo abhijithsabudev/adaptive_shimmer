@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/animation_type.dart';
 import '../models/shimmer_direction.dart';
+import '../controllers/shimmer_controller.dart';
 
 /// Base widget for shimmer animation
 class ShimmerWidget extends StatefulWidget {
@@ -12,6 +13,7 @@ class ShimmerWidget extends StatefulWidget {
   final bool enabled;
   final ShimmerDirection direction;
   final double intensity;
+  final ShimmerController? controller;
 
   const ShimmerWidget({
     Key? key,
@@ -23,6 +25,7 @@ class ShimmerWidget extends StatefulWidget {
     this.enabled = true,
     this.direction = ShimmerDirection.ltr,
     this.intensity = 0.7,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -50,10 +53,31 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
     _pulseAnimation = Tween<double>(begin: 1.0, end: 0.5).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+
+    // Listen to controller changes
+    widget.controller?.addListener(_onControllerChanged);
+  }
+
+  void _onControllerChanged() {
+    final controller = widget.controller;
+    if (controller == null) return;
+
+    switch (controller.state) {
+      case ShimmerState.playing:
+        _controller.repeat();
+        break;
+      case ShimmerState.paused:
+        _controller.stop();
+        break;
+      case ShimmerState.stopped:
+        _controller.reset();
+        break;
+    }
   }
 
   @override
   void dispose() {
+    widget.controller?.removeListener(_onControllerChanged);
     _controller.dispose();
     super.dispose();
   }
@@ -84,35 +108,26 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
   }
 
   Widget _buildShimmer() {
-    return Stack(
-      children: [
-        widget.child,
-        Positioned.fill(
-          child: ShaderMask(
-            shaderCallback: (bounds) {
-              final (begin, end) = _getAlignmentForDirection();
+    return ShaderMask(
+      shaderCallback: (bounds) {
+        final (begin, end) = _getAlignmentForDirection();
 
-              return LinearGradient(
-                begin: begin,
-                end: end,
-                stops: [
-                  _shimmerAnimation.value - 0.3,
-                  _shimmerAnimation.value,
-                  _shimmerAnimation.value + 0.3,
-                ],
-                colors: [
-                  widget.baseColor.withValues(alpha: 0),
-                  widget.highlightColor.withValues(alpha: widget.intensity),
-                  widget.baseColor.withValues(alpha: 0),
-                ],
-              ).createShader(bounds);
-            },
-            child: Container(
-              color: widget.baseColor,
-            ),
-          ),
-        ),
-      ],
+        return LinearGradient(
+          begin: begin,
+          end: end,
+          stops: [
+            _shimmerAnimation.value - 0.3,
+            _shimmerAnimation.value,
+            _shimmerAnimation.value + 0.3,
+          ],
+          colors: [
+            widget.baseColor.withValues(alpha: 0),
+            widget.highlightColor.withValues(alpha: widget.intensity),
+            widget.baseColor.withValues(alpha: 0),
+          ],
+        ).createShader(bounds);
+      },
+      child: widget.child,
     );
   }
 
@@ -147,36 +162,26 @@ class _ShimmerWidgetState extends State<ShimmerWidget>
   Widget _buildCombined() {
     return Opacity(
       opacity: _pulseAnimation.value,
-      child: Stack(
-        children: [
-          widget.child,
-          Positioned.fill(
-            child: ShaderMask(
-              shaderCallback: (bounds) {
-                final (begin, end) = _getAlignmentForDirection();
+      child: ShaderMask(
+        shaderCallback: (bounds) {
+          final (begin, end) = _getAlignmentForDirection();
 
-                return LinearGradient(
-                  begin: begin,
-                  end: end,
-                  stops: [
-                    _shimmerAnimation.value - 0.3,
-                    _shimmerAnimation.value,
-                    _shimmerAnimation.value + 0.3,
-                  ],
-                  colors: [
-                    widget.baseColor.withValues(alpha: 0),
-                    widget.highlightColor
-                        .withValues(alpha: widget.intensity * 0.5),
-                    widget.baseColor.withValues(alpha: 0),
-                  ],
-                ).createShader(bounds);
-              },
-              child: Container(
-                color: widget.baseColor,
-              ),
-            ),
-          ),
-        ],
+          return LinearGradient(
+            begin: begin,
+            end: end,
+            stops: [
+              _shimmerAnimation.value - 0.3,
+              _shimmerAnimation.value,
+              _shimmerAnimation.value + 0.3,
+            ],
+            colors: [
+              widget.baseColor.withValues(alpha: 0),
+              widget.highlightColor.withValues(alpha: widget.intensity * 0.5),
+              widget.baseColor.withValues(alpha: 0),
+            ],
+          ).createShader(bounds);
+        },
+        child: widget.child,
       ),
     );
   }

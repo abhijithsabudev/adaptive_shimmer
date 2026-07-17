@@ -1,3 +1,12 @@
+## 1.2.1 - Documentation Cleanup
+
+### 📚 Updates
+- Removed package comparison table from README
+- Focused documentation on Adaptive Shimmer features
+- Improved README readability and clarity
+
+---
+
 ## 1.2.0 - Semantic API & Advanced Features
 
 ### ✨ Major Updates

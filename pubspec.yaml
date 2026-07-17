@@ -1,6 +1,6 @@
 name: adaptive_shimmer
 description: "The ultimate skeleton loader for Flutter. Zero dependencies, maximum power. Auto-detect widgets, 8 animation directions, custom transformers, collection skeletons, memoization, testing utilities, and complete animation control."
-version: 1.2.0
+version: 1.2.1
 homepage: https://github.com/abhijithsabudev/adaptive_shimmer
 repository: https://github.com/abhijithsabudev/adaptive_shimmer
 issue_tracker: https://github.com/abhijithsabudev/adaptive_shimmer/issues

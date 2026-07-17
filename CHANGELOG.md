@@ -1,3 +1,14 @@
+## 1.2.2 - README Polish
+
+### 📚 Updates
+- Simplified Contributing section for developers
+- Consolidated Support section with single point of contact
+- Added BuyMeACoffee support link
+- Removed fake contact information (email, Twitter)
+- Improved documentation clarity
+
+---
+
 ## 1.2.1 - Documentation Cleanup
 
 ### 📚 Updates
